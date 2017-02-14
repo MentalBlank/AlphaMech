@@ -1,8 +1,7 @@
 <?php
 
-#FILE NEEDS REDO
 /*
- * AlphaFable (DragonFable Private Server)
+ * AlphaMech (MechQuest Private Server)
  * Made by MentalBlank
  * File: cf-usersignup.php - v0.0.1
  */
@@ -21,16 +20,16 @@ if (isset($_POST['strUserName'])) {
         ]
     ];
 
-    $query = $MySQLi->query("SELECT * FROM df_users WHERE name = '{$sign['User']['Name']}' LIMIT 1");
+    $query = $MySQLi->query("SELECT * FROM mq_users WHERE name = '{$sign['User']['Name']}' LIMIT 1");
 
     if ($query->num_rows == 0) {
-        $MySQLi->query("INSERT INTO df_users (name, pass, email, dob, date_created, lastLogin) VALUES ('{$sign['User']['Name']}', '{$Security->encode($sign['User']['Password'])}', '{$sign['User']['Email']}', '{$sign['User']['Birth']}', '{$dateToday}' , 'Never')");
+        $MySQLi->query("INSERT INTO mq_users (name, pass, email, dob, date_created, lastLogin) VALUES ('{$sign['User']['Name']}', '{$Security->encode($sign['User']['Password'])}', '{$sign['User']['Email']}', '{$sign['User']['Birth']}', '{$dateToday}' , 'Never')");
 
         if ($MySQLi->affected_rows > 0) {
-            $query = $MySQLi->query("SELECT * FROM df_users WHERE name = '{$sign['User']['Name']}' LIMIT 1");
+            $query = $MySQLi->query("SELECT * FROM mq_users WHERE name = '{$sign['User']['Name']}' LIMIT 1");
             $query = $query->fetch_assoc();
 
-            $SetQuery = $MySQLi->query("SELECT * FROM df_settings LIMIT 1");
+            $SetQuery = $MySQLi->query("SELECT * FROM mq_settings LIMIT 1");
             $fetch = $SetQuery->fetch_assoc();
             $subject = "Welcome To {$fetch['DFSitename']}";
 
@@ -45,11 +44,11 @@ if (isset($_POST['strUserName'])) {
                             <h2>Welcome to {$sitename}!</h2>
                             <p>
                                 Your free game account at {$sitename} has been successfully created. 
-                                Equip your weapons and armor, conjure up your spells, and Battle On towards victory!
+                                Equip your weapons and armor and Battle On towards victory!
                             </p>
 
                             <h2>Your First Quest:</h2>
-                            <h2><a href='http://{$_SERVER['SERVER_NAME']}/df-activation.php?id={$query['id']}' target='_blank'>Click Here to Confirm Your Account</a></h2>
+                            <h2><a href='http://{$_SERVER['SERVER_NAME']}/mq-activation.php?id={$query['id']}' target='_blank'>Click Here to Confirm Your Account</a></h2>
                             <p>
                             User Name: <strong>{$query['name']}</strong><br>
                             Date Created: Monday, {$query['date_created']}<br>
@@ -60,23 +59,10 @@ if (isset($_POST['strUserName'])) {
                             <ul>
                                 <li>Unlock two additional character slots</li>
                                 <li>Prove that you are a real peson</li>
-                                <li>Prove that you are the owner of the UniqueName:D account</li>
+                                <li>Prove that you are the owner of the account</li>
                                 <li>Secure your account better</li>
                                 <li>Keep up to date on our brand new weekly releases</li>
                             </ul>
-
-                            <h2>New Adventures Every Week!</h2>
-                            <p>
-                            Every week we expand DragonFable with new quests, monsters, items, and special server-wide events for all players!
-                            Read the home page Design Notes and visit the message board to find out the latest news and updates. 
-                            Endless adventures await in an ever-expanding world full of fantasy, magic, and ferocious monsters! 
-                            </p>
-
-                            <h2>Dragon Amulets and Dragon Coins</h2>
-                            <p>
-                            Unlock awesome equipment, dozens of new quests, towns and areas, and hundreds of special items by purchasing a one-time Dragon Amulet upgrade for your character.
-                            You can also buy premium currency Dragon Coins to buy elite weapons, pets, and other awesome items to enhance your game playing fun.
-                            </p>
 
                             <h2>Take Charge!</h2>
                             <p>To make changes to your game account information, please login to the 

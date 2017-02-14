@@ -1,15 +1,16 @@
 <?php
 /*
- * AlphaFable (DragonFable Private Server) 
+ * AlphaMech (MechQuest Private Server)
  * Made by MentalBlank
- * File: mb-fileGrab - v0.0.3
+ * File: mb-fileGrab - v0.0.1
  */
-$urlDF = 'http://dragonfable.battleon.com/game/gamefiles/';
+$urlDF = 'http://mechquest.battleon.com/game/gamefiles/';
 require("../includes/config.php");
 if ($MySQLi->connect_errno) {
     die("Failed to connect to MySQL: (" . $MySQLi->connect_error . ")");
 }
 error_reporting(0);
+set_time_limit(999999999999);
 $rangeMin = 1;
 $rangeMax = 50000;
 ?>
@@ -39,7 +40,7 @@ $rangeMax = 50000;
 <body>
 <table align="center">
     <th>
-        <h2>AlphaFable SWF Downloader</h2>
+        <h2>AlphaMech SWF Downloader</h2>
         <section class="downloaded">
             <?php
 
@@ -47,14 +48,6 @@ $rangeMax = 50000;
             {
                 switch (strtolower($_GET['m'])) {
                     case 'items':
-                        $urlComplete = $urlBase . $urlFile;
-                        $urlFull = str_replace("game/", "", $urlComplete);
-                        break;
-                    case 'houseitems':
-                        $urlComplete = $urlBase . $urlFile;
-                        $urlFull = str_replace("game/", "", $urlComplete);
-                        break;
-                    case 'interfaces':
                         $urlComplete = $urlBase . $urlFile;
                         $urlFull = str_replace("game/", "", $urlComplete);
                         break;
@@ -68,14 +61,6 @@ $rangeMax = 50000;
                         break;
                     case 'maps':
                         $urlComplete = $urlBase . "maps/" . $urlFile;
-                        $urlFull = str_replace("game/", "", $urlComplete);
-                        break;
-                    case 'housemaps':
-                        $urlComplete = $urlBase . "maps/" . $urlFile;
-                        $urlFull = str_replace("game/", "", $urlComplete);
-                        break;
-                    case 'monsters':
-                        $urlComplete = $urlBase . "monsters/" . $urlFile;
                         $urlFull = str_replace("game/", "", $urlComplete);
                         break;
                     case 'classes':
@@ -107,37 +92,7 @@ $rangeMax = 50000;
 
             switch (strtolower($_GET['m'])) {
                 case 'items':
-                    $itemQuery = $MySQLi->query("SELECT FileName, ItemName FROM df_items WHERE `ItemID` BETWEEN {$rangeMin} AND {$rangeMax}");
-                    while ($item = $itemQuery->fetch_assoc()) {
-                        $item['FileName'] = trim($item['FileName']);
-                        if ($item['FileName'] != NULL && $item['FileName'] != "") {
-                            CheckCreateDir($urlDF, $item['FileName'], 0);
-                            if (!file_exists("{$item['FileName']}")) {
-                                if (preg_match('#^/#i', $item['FileName']) === 1) {
-                                    $str = ltrim($item['FileName'], '/');
-                                } else {
-                                    $str = $item['FileName'];
-                                }
-                                $str = str_replace(" ", "%20", $str);
-                                copy($urlDF . $str, "{$str}");
-                                if (!file_exists("{$str}")) {
-                                    $failedItems[$str] = $item['ItemName'];
-                                    array_unique($failedItems);
-                                }
-                            }
-                            chdir("../");
-                        }
-                    }
-                    if (isset($failedItems)) {
-                        foreach ($failedItems as $fileURL => $fileName) {
-                            echo "Failed: {$fileName} - <a href=\"{$urlDF}{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
-                        }
-                    } else {
-                        echo "All Items have been downloaded.";
-                    }
-                    break;
-                case 'houseitems':
-                    $itemQuery = $MySQLi->query("SELECT strFileName, strItemName FROM df_house_items  WHERE `HouseItemID` BETWEEN {$rangeMin} AND {$rangeMax}");
+                    $itemQuery = $MySQLi->query("SELECT strFileName, strItemName FROM mq_items WHERE `ItemID` BETWEEN {$rangeMin} AND {$rangeMax}");
                     while ($item = $itemQuery->fetch_assoc()) {
                         $item['strFileName'] = trim($item['strFileName']);
                         if ($item['strFileName'] != NULL && $item['strFileName'] != "") {
@@ -153,7 +108,9 @@ $rangeMax = 50000;
                                 if (!file_exists("{$str}")) {
                                     $failedItems[$str] = $item['strItemName'];
                                     array_unique($failedItems);
-                                }
+                                } else {
+									echo("Downloaded: {$strItemName}<br/>");
+								}
                             }
                             chdir("../");
                         }
@@ -166,70 +123,44 @@ $rangeMax = 50000;
                         echo "All Items have been downloaded.";
                     }
                     break;
-                case 'interfaces':
-                    $itemQuery = $MySQLi->query("SELECT InterfaceSWF, InterfaceName FROM df_interface WHERE `InterfaceID` BETWEEN {$rangeMin} AND {$rangeMax}");
-                    while ($item = $itemQuery->fetch_assoc()) {
-                        $item['InterfaceSWF'] = trim($item['InterfaceSWF']);
-                        CheckCreateDir($urlDF, $item['InterfaceSWF'], 0);
-                        if (!file_exists("{$item['InterfaceSWF']}")) {
-                            if (preg_match('#^/#i', $item['InterfaceSWF']) === 1) {
-                                $str = ltrim($item['InterfaceSWF'], '/');
-                            } else {
-                                $str = $item['InterfaceSWF'];
-                            }
-                            $str = str_replace(" ", "%20", $str);
-                            copy($urlDF . $str, "{$str}");
-                            if (!file_exists("{$item['InterfaceSWF']}")) {
-                                $failedItems[$item['InterfaceSWF']] = $item['InterfaceName'];
-                                array_unique($failedItems);
-                            }
-                        }
-                        chdir("../");
-                    }
-                    if (isset($failedItems)) {
-                        foreach ($failedItems as $fileURL => $InterfaceSWF) {
-                            echo "Failed: {$InterfaceSWF} - <a href=\"{$urlDF}maps/{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
-                        }
-                    } else {
-                        echo "All Interfaces have been downloaded.";
-                    }
-                    break;
                 case 'classes':
-                    $itemQuery = $MySQLi->query("SELECT ClassSWF,ClassName FROM df_class WHERE `ClassID` BETWEEN {$rangeMin} AND {$rangeMax}");
+                    $itemQuery = $MySQLi->query("SELECT strClassFileName,strClassName FROM mq_class WHERE `ClassID` BETWEEN {$rangeMin} AND {$rangeMax}");
                     while ($item = $itemQuery->fetch_assoc()) {
-                        $item['ClassName'] = trim($item['ClassName']);
-                        CheckCreateDir($urlDF, $item['ClassSWF'], 1);
-                        if (!file_exists("classes/M/{$item['ClassSWF']}")) {
-                            copy("{$urlDF}classes/M/{$item['ClassSWF']}", "classes/M/{$item['ClassSWF']}");
-                            if (!file_exists("classes/M/{$item['ClassSWF']}")) {
-                                $failedClasses[$item['ClassSWF']] = $item['ClassName'];
+                        $item['strClassName'] = trim($item['strClassName']);
+                        CheckCreateDir($urlDF, $item['strClassFileName'], 1);
+                        if (!file_exists("classes/M/{$item['strClassFileName']}")) {
+                            copy("{$urlDF}classes/M/{$item['strClassFileName']}", "classes/M/{$item['strClassFileName']}");
+                            if (!file_exists("classes/M/{$item['strClassFileName']}")) {
+                                $failedClasses[$item['strClassFileName']] = $item['strClassName'];
                                 array_unique($failedClasses);
-                            }
+                            } else {
+									echo("Downloaded: {$strClassName}<br/>");
+								}
                         }
                         chdir("../");
-                        CheckCreateDir($urlDF, $item['ClassSWF'], 2);
-                        if (!file_exists("classes/F/{$item['ClassSWF']}")) {
-                            copy("{$urlDF}classes/F/{$item['ClassSWF']}", "classes/F/{$item['ClassSWF']}");
-                            if (!file_exists("classes/F/{$item['ClassSWF']}")) {
-                                $failedClasses2[$item['ClassSWF']] = $item['ClassName'];
+                        CheckCreateDir($urlDF, $item['strClassFileName'], 2);
+                        if (!file_exists("classes/F/{$item['strClassFileName']}")) {
+                            copy("{$urlDF}classes/F/{$item['strClassFileName']}", "classes/F/{$item['strClassFileName']}");
+                            if (!file_exists("classes/F/{$item['strClassFileName']}")) {
+                                $failedClasses2[$item['strClassFileName']] = $item['strClassName'];
                                 array_unique($failedClasses2);
                             }
                         }
                         chdir("../");
                     }
                     if (isset($failedClasses) || isset($failedClasses2)) {
-                        foreach ($failedClasses as $fileURL => $fileName) {
-                            echo "Failed: {$fileName} (M) - <a href=\"{$urlDF}classes/M/{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
+                        foreach ($failedClasses as $fileURL => $strFileName) {
+                            echo "Failed: {$strFileName} (M) - <a href=\"{$urlDF}classes/M/{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
                         }
-                        foreach ($failedClasses2 as $fileURL => $fileName) {
-                            echo "Failed: {$fileName} (F) - <a href=\"{$urlDF}classes/F/{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
+                        foreach ($failedClasses2 as $fileURL => $strFileName) {
+                            echo "Failed: {$strFileName} (F) - <a href=\"{$urlDF}classes/F/{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
                         }
                     } else {
                         echo "All Classes have been downloaded.";
                     }
                     break;
                 case 'maps':
-                    $itemQuery = $MySQLi->query("SELECT FileName, Name, Extra FROM df_quests WHERE `QuestID` BETWEEN {$rangeMin} AND {$rangeMax}");
+                    $itemQuery = $MySQLi->query("SELECT FileName, Name FROM mq_quests WHERE `QuestID` BETWEEN {$rangeMin} AND {$rangeMax}");
                     while ($item = $itemQuery->fetch_assoc()) {
                         $item['FileName'] = trim($item['FileName']);
                         CheckCreateDir($urlDF, $item['FileName'], 0);
@@ -238,79 +169,22 @@ $rangeMax = 50000;
                             if (!file_exists("maps/{$item['FileName']}")) {
                                 $failedItems[$item['FileName']] = $item['Name'];
                                 array_unique($failedItems);
-                            }
+                            } else {
+									echo("Downloaded: {$Name}<br/>");
+								}
                         }
                         chdir("../");
-                        $zones = explode(";", $item['Extra']);
-                        for ($i = 0; $i <= count($zones); $i++) {
-                            $zone2 = explode("=", $zones[$i]);
-                            if (strpos($zone2[1], ".swf")) {
-                                $zone2[1] = trim($zone2[1]);
-                                CheckCreateDir($urlDF, $zone2[1], 0);
-                                if (!file_exists("maps/{$zone2[1]}")) {
-                                    copy($urlDF . "maps/" . $zone2[1], "maps/{$zone2[1]}");
-                                    if (!file_exists("maps/{$zone2[1]}")) {
-                                        echo("Downloaded: {$zone2[1]}<br>");
-                                    }
-                                }
-                                chdir("../");
-                            }
-                        }
                     }
                     if (isset($failedItems)) {
-                        foreach ($failedItems as $fileURL => $fileName) {
-                            echo "Failed: {$fileName} - <a href=\"{$urlDF}maps/{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
+                        foreach ($failedItems as $fileURL => $FileName) {
+                            echo "Failed: {$FileName} - <a href=\"{$urlDF}maps/{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
                         }
                     } else {
                         echo "All Maps have been downloaded.";
-                    }
-                    break;
-                case 'housemaps':
-                    $itemQuery = $MySQLi->query("SELECT strFileName, strHouseName FROM df_houses WHERE `HouseID` BETWEEN {$rangeMin} AND {$rangeMax}");
-                    while ($item = $itemQuery->fetch_assoc()) {
-                        $item['strFileName'] = trim($item['strFileName']);
-                        CheckCreateDir($urlDF, $item['strFileName'], 0);
-                        if (!file_exists("maps/{$item['strFileName']}")) {
-                            copy($urlDF . "maps/" . $item['strFileName'], "maps/{$item['strFileName']}");
-                            if (!file_exists("maps/{$item['strFileName']}")) {
-                                $failedItems[$item['strFileName']] = $item['strHouseName'];
-                                array_unique($failedItems);
-                            }
-                        }
-                        chdir("../");
-                    }
-                    if (isset($failedItems)) {
-                        foreach ($failedItems as $fileURL => $strFileName) {
-                            echo "Failed: {$strFileName} - <a href=\"{$urlDF}maps/{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
-                        }
-                    } else {
-                        echo "All Maps have been downloaded.";
-                    }
-                    break;
-                case 'monsters':
-                    $itemQuery = $MySQLi->query("SELECT MonsterGroupFileName FROM df_quests WHERE `QuestID` BETWEEN {$rangeMin} AND {$rangeMax}");
-                    while ($item = $itemQuery->fetch_assoc()) {
-                        $item['MonsterGroupFileName'] = trim($item['MonsterGroupFileName']);
-                        CheckCreateDir($urlDF, $item['MonsterGroupFileName'], 0);
-                        if (!file_exists("monsters/{$item['MonsterGroupFileName']}")) {
-                            copy($urlDF . "monsters/" . $item['MonsterGroupFileName'], "monsters/{$item['MonsterGroupFileName']}");
-                            if (!file_exists("monsters/{$item['MonsterGroupFileName']}")) {
-                                $failedItems[$item['MonsterGroupFileName']] = $item['MonsterGroupFileName'];
-                                array_unique($failedItems);
-                            }
-                        }
-                        chdir("../");
-                    }
-                    if (isset($failedItems)) {
-                        foreach ($failedItems as $fileURL => $fileName) {
-                            echo "Failed: {$fileName} - <a href=\"{$urlDF}monsters/{$fileURL}\" target=\"_blank\">Manual Download</a><br>";
-                        }
-                    } else {
-                        echo "All Monsters have been downloaded.";
                     }
                     break;
                 case 'hairs':
-                    $itemQuery = $MySQLi->query("SELECT HairSWF,HairName,Gender FROM df_hairs WHERE `HairID` BETWEEN {$rangeMin} AND {$rangeMax} ");
+                    $itemQuery = $MySQLi->query("SELECT HairSWF,HairName,Gender FROM mq_hairs WHERE `HairID` BETWEEN {$rangeMin} AND {$rangeMax} ");
                     while ($item = $itemQuery->fetch_assoc()) {
                         $item['HairSWF'] = trim($item['HairSWF']);
                         CheckCreateDir($urlDF, $item['HairSWF'], 0);
@@ -324,7 +198,9 @@ $rangeMax = 50000;
                                     $failedItems[$item['HairSWF']] = $item['HairName'];
                                     array_unique($failedItems);
                                 }
-                            }
+                            } else {
+								echo("Downloaded: {$HairName}<br/>");
+							}
                         }
                         chdir("../");
                     }
@@ -341,12 +217,8 @@ $rangeMax = 50000;
                     break;
                 default:
                     echo('<a href="?m=items">Download Items</a><br>');
-                    echo('<a href="?m=interfaces">Download Interfaces</a><br>');
                     echo('<a href="?m=classes">Download Classes</a><br>');
                     echo('<a href="?m=maps">Download Maps</a><br>');
-                    echo('<a href="?m=housemaps">Download Houses</a><br>');
-                    echo('<a href="?m=houseitems">Download House Items</a><br>');
-                    echo('<a href="?m=monsters">Download Monsters</a><br>');
                     echo('<a href="?m=hairs">Download Hairs</a><br>');
             }
             ?>

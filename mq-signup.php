@@ -1,0 +1,43 @@
+<?php
+require("includes/config.php");
+$query = $MySQLi->query("SELECT * FROM mq_settings LIMIT 1");
+$fetch = $query->fetch_assoc();
+$signupSWF = $fetch['signupSWF'];
+$sitename = $fetch['DFSitename'];
+$MySQLi->close();
+?>
+<html lang="en" dir="ltr">
+<head>
+    <title><?php echo $sitename; ?> | Register</title>
+    <base href=""/>
+    <link rel="stylesheet" href="includes/css/style.css"/>
+    <link rel="shortcut icon" href="includes/favicon.ico"/>
+
+    <meta charset="utf-8"/>
+    <!--[if lt IE 9]>
+    <script src="https://raw.githubusercontent.com/aFarkas/html5shiv/master/src/html5shiv.js"></script><![endif]-->
+</head>
+<body>
+<section id="window">
+    <section id="outsideWindow">
+        <section id="gameWindow">
+            <embed src="<?php
+            echo($signupSWF);
+            ?>" bgcolor="#3B0100" wmode="transparent" style="border-radius:5px" scale="noborder" quality="autohigh"
+                   width="700" height="550" type="application/x-shockwave-flash"
+                   pluginspage="http://www.macromedia.com/go/getflashplayer" swLiveConnect="true"/>
+            <section id="linkWindow">
+                        <span>
+                        <span>
+                            <a href="game/">Play</a> | 
+                            <a href="mq-signup.php">Register</a> | 
+                            <a href="top100.php">Top100</a> | 
+                            <a href="mb-bugTrack.php">Submit Bug</a> | 
+                            <a href="mq-lostpassword.php">Lost Password</a>
+                        </span>
+            </section>
+        </section>
+    </section>
+</section>
+</body>
+</html>

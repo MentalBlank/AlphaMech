@@ -21,9 +21,8 @@ if ($size == "huge") {
     $height = "1280";
     $font = "19";
 }
-$query = $MySQLi->query("SELECT * FROM df_settings LIMIT 1");
+$query = $MySQLi->query("SELECT * FROM mq_settings LIMIT 1");
 $fetch = $query->fetch_assoc();
-$loaderSWF = $fetch['loaderSWF'];
 $CoreSWF = $fetch['gameSWF'];
 $sitename = $fetch['DFSitename'];
 $MySQLi->close();
@@ -48,45 +47,22 @@ $MySQLi->close();
         ?>; height:<?php
         echo $height;
         ?>;">
-            <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" id="FFable"
-                    codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0"
-                    width="<?php
-                    echo $width;
-                    ?>" height="<?php
-            echo $height;
-            ?>" align="middle">
-                <param name="allowScriptAccess" value="sameDomain"/>
-                <param name="movie" value="gamefiles/<?php
-                echo $loaderSWF;
-                ?>"/>
-                <param name="menu" value="false"/>
-                <param name="allowFullScreen" value="true"/>
-
-                <param name="flashvars" value="strFileName=<?php
-                echo $CoreSWF;
-                ?>"/>
-                <param name="bgcolor" value="#530000"/>
-                <embed src="gamefiles/<?php
-                echo $loaderSWF;
-                ?>" FLASHVARS="strFileName=<?php
-                echo $CoreSWF;
-                ?>" name="FFable" bgcolor="#530000" menu="false" allowFullScreen="true" width="<?php
-                echo $width;
-                ?>" height="<?php
-                echo $height;
-                ?>" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash"
-                       pluginspage="http://www.macromedia.com/go/getflashplayer" swLiveConnect="true"/>
+            <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="<?php echo $width; ?>" height="<?php echo $height; ?>" align="middle">
+                <param name="allowScriptAccess" value="sameDomain" />
+                <param name="movie" value=""<?php echo $CoreSWF; ?>" />
+                <param name="menu" value="false" />
+                <param name="BGCOLOR" value="#072438" />
+                <param name="SCALE" value="exactfit" />
+                <embed src="<?php echo $CoreSWF; ?>" name="FFable" width="<?php echo $width; ?>" height="<?php echo $height; ?>" align="middle" bgcolor="#072438" menu="false" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" scale="exactfit" swLiveConnect="true" />
             </object>
             <section id="linkWindow">
                         <span>
+                        <span>
                             <a href="index.php">Play</a> | 
-                            <a href="../df-signup.php">Register</a> | 
-                            <a href="../mb-charTransfer.php">Transfer</a> | 
+                            <a href="../mq-signup.php">Register</a> | 
                             <a href="../top100.php">Top100</a> | 
                             <a href="../mb-bugTrack.php">Submit Bug</a> | 
-                            <a href="../df-upgrade.php">Upgrade</a> | 
-                            <a href="../account/">Account</a> |
-                            <a href="../df-lostpassword.php">Lost Password</a>
+                            <a href="../mq-lostpassword.php">Lost Password</a>
                         </span>
             </section>
         </section>

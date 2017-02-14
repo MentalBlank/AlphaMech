@@ -8,7 +8,7 @@
 $mysql_host = "localhost";
 $mysql_user = "root";
 $mysql_pass = "root";
-$mysql_name = "alphafable";
+$mysql_name = "alphamech";
 
 $MySQLi = new MySQLi($mysql_host, $mysql_user, $mysql_pass, $mysql_name);
 if (mysqli_connect_error()) {
@@ -16,5 +16,5 @@ if (mysqli_connect_error()) {
 };
 
 date_default_timezone_set('America/Los_Angeles');
-error_reporting(0);
+error_reporting(1);
 $dateToday = date('Y\-m\-j\TH\:i\:s\.B');

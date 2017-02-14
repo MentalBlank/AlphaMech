@@ -1,12 +1,12 @@
 <?php
 include('includes/config.php');
-$query = $MySQLi->query("SELECT * FROM df_settings LIMIT 1");
+$query = $MySQLi->query("SELECT * FROM mq_settings LIMIT 1");
 $fetch = $query->fetch_assoc();
 $sitename = $fetch['DFSitename'];
 if (filter_input(INPUT_GET, 'order') == "name" || filter_input(INPUT_GET, 'order') == "level" || filter_input(INPUT_GET, 'order') == "classid" || filter_input(INPUT_GET, 'order') == "gold" || filter_input(INPUT_GET, 'order') == "coins" || filter_input(INPUT_GET, 'order') == "dragon_amulet" || filter_input(INPUT_GET, 'order') == "userid") {
     $order = filter_input(INPUT_GET, 'order');
 } else {
-    $order = "level";
+    $order = "intLevel";
 }
 ?>
 <head>
@@ -33,28 +33,28 @@ if (filter_input(INPUT_GET, 'order') == "name" || filter_input(INPUT_GET, 'order
                             <td class='top100Heading'><a href="top100.php?order=dragon_amulet"><b>Upgraded</b></a></td>
                         </tr>
             <?php
-            if ($order == "name" || $order == "classid" || $order == "dragon_amulet" || $order == "userid") {
-                $character = $MySQLi->query("SELECT * FROM df_characters WHERE classid != 42 && classid != 71 ORDER BY ".$order." ASC LIMIT 100");
+            if ($order == "strCharacterName" || $order == "ClassID" || $order == "intDragonAmulet" || $order == "UserID") {
+                $character = $MySQLi->query("SELECT * FROM mq_characters ORDER BY ".$order." ASC LIMIT 100");
             } else {
-                $character = $MySQLi->query("SELECT * FROM df_characters WHERE classid != 42 && classid != 71 ORDER BY ".$order." DESC LIMIT 100");
+                $character = $MySQLi->query("SELECT * FROM mq_characters ORDER BY intLevel DESC LIMIT 100");
             }
 
             $i = 0;
             while ($chr = $character->fetch_assoc()) {
 
                 $i = $i + 1;
-                $class_query = $MySQLi->query("SELECT ClassName FROM df_class WHERE ClassID = '{$chr['classid']}'");
+                $class_query = $MySQLi->query("SELECT strClassName FROM mq_class WHERE ClassID = '{$chr['ClassID']}'");
                 $class = $class_query->fetch_assoc();
-                $user_query = $MySQLi->query("SELECT name FROM df_users WHERE id = '{$chr['userid']}'");
+                $user_query = $MySQLi->query("SELECT name FROM mq_users WHERE id = '{$chr['userid']}'");
                 $user = $user_query->fetch_assoc();
                 ?>
                 <tr>
                     <td class='top100'><p><?php echo $i; ?></p></td>
-                    <td class='top100Name'><p><a href="df-chardetail.php?id=<?php echo $chr["id"]; ?>"><?php echo $chr["name"]; ?></a></p></td>
-                    <td class='top100'><p><?php echo $chr["level"]; ?></p></td>
-                    <td class='top100'><p><?php echo $class["ClassName"]; ?></p></td>
-                    <td class='top100'><p><?php echo $chr["gold"]; ?></p></td>
-                    <td class='top100'><p><?php echo $chr["Coins"]; ?></p></td>
+                    <td class='top100Name'><p><a href="mq-chardetail.php?id=<?php echo $chr["id"]; ?>"><?php echo $chr["strCharacterName"]; ?></a></p></td>
+                    <td class='top100'><p><?php echo $chr["intLevel"]; ?></p></td>
+                    <td class='top100'><p><?php echo $class["strClassName"]; ?></p></td>
+                    <td class='top100'><p><?php echo $chr["intGold"]; ?></p></td>
+                    <td class='top100'><p><?php echo $chr["intCoins"]; ?></p></td>
                     <td class='top100'><p><?php
                             if ($chr['dragon_amulet'] == "1" || $user['dragon_amulet'] == 1) {
                                 echo "<font style=\"color: gold; font-weight: bold;\">True</font>";
@@ -73,15 +73,11 @@ if (filter_input(INPUT_GET, 'order') == "name" || filter_input(INPUT_GET, 'order
     </form>
     <section id="linkWindow">
                         <span>
-							<a href="index.php">Home</a> | 
                             <a href="game/">Play</a> | 
-                            <a href="df-signup.php">Register</a> | 
-                            <a href="mb-charTransfer.php">Transfer</a> | 
+                            <a href="mq-signup.php">Register</a> | 
                             <a href="top100.php">Top100</a> | 
                             <a href="mb-bugTrack.php">Submit Bug</a> | 
-                            <a href="df-upgrade.php">Upgrade</a> | 
-                            <a href="account/">Account</a>
-                            <a href="df-lostpassword.php">Lost Password</a>
+                            <a href="mq-lostpassword.php">Lost Password</a>
                         </span>
     </section>
 </div>

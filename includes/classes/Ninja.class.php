@@ -18,8 +18,8 @@ class Ninja
 
     public function decodeNinja($theText)
     {
-        $RemoveNinjaTag1 = str_replace("<ninja2>", "", $theText);
-        $theNewText = str_replace("</ninja2>", "", $RemoveNinjaTag1);
+        $RemoveNinjaTag1 = str_replace("<ninja2>","",$theText);
+        $theNewText = str_replace("</ninja2>","",$RemoveNinjaTag1);
         $strKey = "ZorbakOwnsYou";
         $text = strlen($theNewText);
         $key = strlen($strKey);
@@ -29,7 +29,7 @@ class Ninja
             $_loc5 = intval(substr($theNewText, $_loc1, 2), 30);
             $_loc4 = intval(substr($theNewText, $_loc1 + 2, 2), 30);
             $_loc2 = ord($strKey{$_loc1 / 4 % $key});
-            $result = $result . chr($_loc5 - $_loc4 - $_loc2);
+            $result = $result.chr($_loc5 - $_loc4 - $_loc2);
         }
 
         return ($result);

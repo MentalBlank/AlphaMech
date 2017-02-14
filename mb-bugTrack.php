@@ -1,19 +1,19 @@
 <?php
 /*
- * AlphaFable (DragonFable Private Server) 
+ * AlphaMech (MechQuest Private Server) 
  * Made by MentalBlank
  * File: mb-bugTrack - v0.0.1
  */
 
 require("includes/config.php");
-$query = $MySQLi->query("SELECT * FROM df_settings LIMIT 1");
+$query = $MySQLi->query("SELECT * FROM mq_settings LIMIT 1");
 $fetch = $query->fetch_assoc();
 $sitename = $fetch['DFSitename'];
 $adminEmail = $fetch['AdminEmail'];
 
 if (isset($_POST['How'])) {
     $email_to = $adminEmail;
-    $email_subject = "AlphaFable Bug Report";
+    $email_subject = "AlphaMech Bug Report";
 
     $type = $_POST['Type'];
     $how = $_POST['How'];
@@ -52,18 +52,6 @@ if (isset($_POST['How'])) {
     <link rel="shortcut icon" href="includes/favicon.ico"/>
 
     <title><?php echo $sitename; ?> | Bug Tracker</title>
-    <style>
-        .downloaded {
-            width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 10px 20px;
-            overflow-y: auto;
-            border: 1px solid #860000;
-            background-color: #860000;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 <body>
 <br/><a href="game/index.php"><img src="images/logo.png" width="300px"/></a><br/>
@@ -77,7 +65,7 @@ if (isset($_POST['How'])) {
             <h2>Submit a Bug Report</h2>
             What type of problem is it?:<br/>
             <select NAME="Type">
-                <option value="Character / Inventory / Dragons">Character / Inventory / Dragons</option>
+                <option value="Character / Inventory / Dragons">Character / Inventory</option>
                 <option value="Town / Quest / Scene / Zone">Town / Quest / Scene / Zone</option>
                 <option value="Shop / Item">Shop / Item</option>
                 <option value="NPCs / Pets / Guests">NPCs / Pets / Guests</option>
@@ -105,14 +93,12 @@ if (isset($_POST['How'])) {
 </section>
 <section id="linkWindow"><br/>
     <span>
+                        <span>
                             <a href="game/">Play</a> | 
-                            <a href="df-signup.php">Register</a> | 
-                            <a href="mb-charTransfer.php">Transfer</a> | 
+                            <a href="mq-signup.php">Register</a> | 
                             <a href="top100.php">Top100</a> | 
                             <a href="mb-bugTrack.php">Submit Bug</a> | 
-                            <a href="df-upgrade.php">Upgrade</a> | 
-							<a href="account/">Account</a> |
-                            <a href="df-lostpassword.php">Lost Password</a>
+                            <a href="mq-lostpassword.php">Lost Password</a>
                         </span>
 </section>
 </body>

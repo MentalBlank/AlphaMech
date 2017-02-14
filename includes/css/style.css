@@ -61,7 +61,7 @@ body, html {
 }
 body {
     font-family: 'Campton200';
-    background-color: #660000;
+    background-color: #1F3D7A;
     color: #FFF;
 }
 @font-face {
@@ -92,31 +92,41 @@ a:hover, a:active, a:focus {
     padding: 10px;
 }
 #gameWindow {
-    border: 1px solid #860000;
+    border: 1px solid #355087;
     height: 550px;
     width: 750px;
     padding: 7px 7px 25px 7px;
-    background-color: #860000;
+    background-color: #355087;
     border-radius: 5px;
 }
 #notes {
     margin-left: auto;
     margin-right: auto;
-    border: 1px solid #860000;
+    border: 1px solid #355087;
     width: 80%;
     padding: 2px 2px 2px 2px;
-    background-color: #860000;
+    background-color: #355087;
     border-radius: 5px;
 }
 #charWindow {
     margin-left: auto;
     margin-right: auto;
-    border: 1px solid #860000;
+    border: 1px solid #355087;
     width: 490px;
     padding: 10px 10px 10px 10px;
-    background-color: #860000;
+    background-color: #355087;
     border-radius: 5px;
 }
+        .downloaded {
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px 20px;
+            overflow-y: auto;
+            border: 1px solid #355087;
+            background-color: #355087;
+            border-radius: 5px;
+        }
 .subheader {
     font-family: 'BD Merced';
     font-size: 18pt;

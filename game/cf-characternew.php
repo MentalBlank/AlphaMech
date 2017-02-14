@@ -36,19 +36,19 @@ if (isset($_POST['strCharacterName'])) {
         $sign['Char']['ID']['HairFrame'] = 1;
     }
 
-    $userQuery = $MySQLi->query("SELECT * FROM `df_users` WHERE id = '{$sign['Char']['ID']['User']}' ORDER BY id DESC LIMIT 1");
+    $userQuery = $MySQLi->query("SELECT * FROM `mq_users` WHERE id = '{$sign['Char']['ID']['User']}' ORDER BY id DESC LIMIT 1");
     $user = $userQuery->fetch_assoc();
     if ($userQuery->num_rows == 1) {
         date_default_timezone_set('America/Los_Angeles');
         $dateToday = date('Y\-m\-j\TH\:i\:s\.B');
-        $STEVE = $MySQLi->query("INSERT INTO df_characters(userid, name, dragon_amulet, gender, born, hairid, colorhair, colorskin, colorbase, colortrim, classid, BaseClassID, PrevClassID, raceid, hairframe) VALUES('{$sign['Char']['ID']['User']}', '{$sign['Char']['Name']}', {$user['upgrade']}, '{$sign['Char']['Gender']}', '{$dateToday}', '{$sign['Char']['ID']['Hair']}', '{$sign['Char']['Color']['Hair']}', '{$sign['Char']['Color']['Skin']}', '{$sign['Char']['Color']['Base']}', '{$sign['Char']['Color']['Trim']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Race']}', '{$sign['Char']['ID']['HairFrame']}')");
+        $STEVE = $MySQLi->query("INSERT INTO mq_characters(userid, name, dragon_amulet, gender, born, hairid, colorhair, colorskin, colorbase, colortrim, classid, BaseClassID, PrevClassID, raceid, hairframe) VALUES('{$sign['Char']['ID']['User']}', '{$sign['Char']['Name']}', {$user['upgrade']}, '{$sign['Char']['Gender']}', '{$dateToday}', '{$sign['Char']['ID']['Hair']}', '{$sign['Char']['Color']['Hair']}', '{$sign['Char']['Color']['Skin']}', '{$sign['Char']['Color']['Base']}', '{$sign['Char']['Color']['Trim']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Race']}', '{$sign['Char']['ID']['HairFrame']}')");
         $file = 'people.txt';
-        $current = "INSERT INTO df_characters(userid, name, dragon_amulet, gender, born, hairid, colorhair, colorskin, colorbase, colortrim, classid, BaseClassID, PrevClassID, raceid, hairframe) VALUES('{$sign['Char']['ID']['User']}', '{$sign['Char']['Name']}', {$user['upgrade']}, '{$sign['Char']['Gender']}', '{$dateToday}', '{$sign['Char']['ID']['Hair']}', '{$sign['Char']['Color']['Hair']}', '{$sign['Char']['Color']['Skin']}', '{$sign['Char']['Color']['Base']}', '{$sign['Char']['Color']['Trim']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Race']}', '{$sign['Char']['ID']['HairFrame']}')";
+        $current = "INSERT INTO mq_characters(userid, name, dragon_amulet, gender, born, hairid, colorhair, colorskin, colorbase, colortrim, classid, BaseClassID, PrevClassID, raceid, hairframe) VALUES('{$sign['Char']['ID']['User']}', '{$sign['Char']['Name']}', {$user['upgrade']}, '{$sign['Char']['Gender']}', '{$dateToday}', '{$sign['Char']['ID']['Hair']}', '{$sign['Char']['Color']['Hair']}', '{$sign['Char']['Color']['Skin']}', '{$sign['Char']['Color']['Base']}', '{$sign['Char']['Color']['Trim']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Class']}', '{$sign['Char']['ID']['Race']}', '{$sign['Char']['ID']['HairFrame']}')";
         if ($MySQLi->affected_rows > 0) {
-            /* Gives character an Unlimited X-Boost */
-            $char_result = $MySQLi->query("SELECT * FROM df_characters WHERE userid = '{$sign['Char']['ID']['User']}' AND name = '{$sign['Char']['Name']}' AND born = '{$dateToday}'");
+            /* Gives character an Unlimited X-Boost 
+            $char_result = $MySQLi->query("SELECT * FROM mq_characters WHERE userid = '{$sign['Char']['ID']['User']}' AND name = '{$sign['Char']['Name']}' AND born = '{$dateToday}'");
             $char = $char_result->fetch_assoc();
-            $MySQLi->query("INSERT INTO `df_equipment` (`id`, `CharID`, `ItemID`, `StartingItem`, `count`, `Level`, `Exp`, `House`, `HouseItem`, `intEquipSlotPos`) VALUES (NULL, '{$char['id']}', '3613', '0', '1', '1', '0', '0', '0', '0');");
+            $MySQLi->query("INSERT INTO `mq_equipment` (`id`, `CharID`, `ItemID`, `StartingItem`, `count`, `Level`, `Exp`, `House`, `HouseItem`, `intEquipSlotPos`) VALUES (NULL, '{$char['id']}', '3613', '0', '1', '1', '0', '0', '0', '0');"); */
             if ($MySQLi->affected_rows > 0) {
                 $Core->sendVar('code', 0);
             } else {

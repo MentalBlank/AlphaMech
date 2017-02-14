@@ -1,6 +1,6 @@
 <?php
 require("includes/config.php");
-$query = $MySQLi->query("SELECT * FROM df_settings LIMIT 1");
+$query = $MySQLi->query("SELECT * FROM mq_settings LIMIT 1");
 $fetch = $query->fetch_assoc();
 $sitename = $fetch['DFSitename'];
 ?>
@@ -39,14 +39,12 @@ $sitename = $fetch['DFSitename'];
             </object>
             <section id="linkWindow">
                         <span>
+                        <span>
                             <a href="game/">Play</a> | 
-                            <a href="df-signup.php">Register</a> | 
-                            <a href="mb-charTransfer.php">Transfer</a> | 
+                            <a href="mq-signup.php">Register</a> | 
                             <a href="top100.php">Top100</a> | 
                             <a href="mb-bugTrack.php">Submit Bug</a> | 
-                            <a href="df-upgrade.php">Upgrade</a> | 
-                            <a href="account/">Account</a> |
-                            <a href="df-lostpassword.php">Lost Password</a>
+                            <a href="mq-lostpassword.php">Lost Password</a>
                         </span>
             </section>
         </section>
